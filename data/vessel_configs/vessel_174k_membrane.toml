@@ -1,0 +1,49 @@
+
+[vessel]
+name = "LNGC_vessel"
+voyage = "L" #'L'adden or 'B'allast
+draft = 11.65 # m
+cofferdam_space = 5 # cofferdam space temp [deg C]
+
+#list of dicts
+
+#No.1 tank params
+[[tanks]]
+Number = 1
+Avg_Liquid_Temperature = -157.1 #deg C
+Avg_Vapor_Temperature = -104.6 #deg C
+Tank_Capacity = 24_670.0 # m^3
+Liquid_Volume = 24_202.629 # m^3
+Tank_Pressure = 128 #mbar
+Geometry = {breadth = 41.86, height = 27.7, length = 33.6, h1 = 16.0, h2 = 13.0} # in m. See README.md for h11,h12,...
+
+#No.2 tank params
+[[tanks]]
+Number = 2
+Avg_Liquid_Temperature = -160.0 #deg C
+Avg_Vapor_Temperature = -104.6 #deg C
+Tank_Capacity = 50_208.0 # m^3
+Liquid_Volume = 48_947.604 # m^3
+Tank_Pressure = 128 #mbar
+Geometry = {breadth = 41.86, height = 27.7, length = 50.4, h1 = 10.0, h2 = 7.95}
+
+#No.3 tank params
+[[tanks]]
+Number = 3
+Avg_Liquid_Temperature = -159.5 #deg C
+Avg_Vapor_Temperature = -105.8 #deg C
+Tank_Capacity = 50_208 # m^3
+Liquid_Volume = 48_942.0 # m^3
+Tank_Pressure = 128 #mbar
+Geometry = {breadth = 41.86, height = 27.7, length = 50.4, h1 = 10.0, h2 = 7.95}
+
+#No.4 tank params
+[[tanks]]
+Number = 4
+Avg_Liquid_Temperature = -159.5 #deg C
+Avg_Vapor_Temperature = -112.4 #deg C
+Tank_Capacity = 48_469.0 # m^3
+Liquid_Volume = 47_238.654 # m^3
+Tank_Pressure = 128 #mbar
+Geometry = {breadth = 41.86, height = 27.7, length = 48.68, h1 = 10.14, h2 = 8.0}
+

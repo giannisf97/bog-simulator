@@ -1,0 +1,13 @@
+# Editable Mode & Build Artifacts
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtual Environments
+venv/
+.venv/
+
+# Python Bytecode Caches
+__pycache__/
+*.py[cod]
