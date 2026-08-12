@@ -11,3 +11,6 @@ venv/
 # Python Bytecode Caches
 __pycache__/
 *.py[cod]
+
+#docs excluded due to GDPR
+docs/
