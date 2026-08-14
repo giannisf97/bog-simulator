@@ -6,7 +6,6 @@ from bog_simulator.ui import components
 
 from bog_simulator.core.vessel import LNGc
 from bog_simulator.core.environment import Environment
-from bog_simulator.core.tank import MembraneTank
 
 
 class Simulation_GUI(tk.Tk):
