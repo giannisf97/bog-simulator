@@ -51,5 +51,14 @@ def total_dp(tanks, cons, prod, dt):
 
 
 def megi_consumption(rpm):
-    m_gas = (0.00441 * pow(rpm, 3) - 0.042 * pow(rpm, 2) +0.95 * rpm) #/ 3600
-    return m_gas
+    formula = (0.00441 * pow(rpm, 3) - 0.042 * pow(rpm, 2) +0.95 * rpm) #/ 3600
+    return formula
+
+def dfde_consumption(type, output):
+    '''empirical calculation'''
+    if type == 'W6L34DF':
+        formula = 1.35e-5 * pow(output, 2) + 0.0885 * output + 99.2 # kg/h
+    elif type == 'W8L34DF':
+        formula = 1.01e-5 * pow(output, 2) + 0.0885 * output + 132.3 # kg/h
+
+    return formula
