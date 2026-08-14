@@ -3,3 +3,4 @@ class GCU:
     def __init__(self, rate: int):
         self.rate = rate
         self.con = self.rate
+        self.new_feature
