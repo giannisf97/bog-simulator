@@ -3,6 +3,7 @@ from pathlib import Path
 #-----Directories--------
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = BASE_DIR / "data"
+RESOURCE_DIR = BASE_DIR / "resources"
 
 #-----Constants----------
 LANTENT_HEAT = 510_000.0 # J/kg
