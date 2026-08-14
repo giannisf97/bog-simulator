@@ -48,3 +48,8 @@ def total_dp(tanks, cons, prod, dt):
     '''Calculates the pressure build-up in all the cargo tanks'''
     return ((R * mean_vapor_temp(tanks)) / (total_vapor_vol(tanks) * M)) * (
             total_mbog(tanks) + (cons + prod) / 3600) * dt
+
+
+def megi_consumption(rpm):
+    m_gas = (0.00441 * pow(rpm, 3) - 0.042 * pow(rpm, 2) +0.95 * rpm) #/ 3600
+    return m_gas
