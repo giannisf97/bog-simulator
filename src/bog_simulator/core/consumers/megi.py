@@ -9,13 +9,19 @@ class MEGI:
         config = megi_config or {}
 
         self.type = config["type"]
-        self._is_operational = config["is_operational"]
+        self.is_operational = config["is_operational"]
         self.update(config["rpm"])
+
+    def start_engine(self):
+        self.is_operational = True
+
+    def stop_engine(self):
+        self.is_operational = False
 
     def update(self, rpm):
         if self.rpm_limit["max"] >= rpm >= self.rpm_limit["min"]:
             self.rpm = rpm
-            self.m_gas = self._is_operational * megi_consumption(self.rpm)
+            self.m_gas = self.is_operational * megi_consumption(self.rpm)
 
 #testing
 if __name__ == "__main__":

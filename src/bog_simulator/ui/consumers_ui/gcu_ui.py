@@ -34,9 +34,23 @@ class GCU_UI(tk.Frame):
 
         self.label = tk.Label(self, text="GCU")
 
+        self.start_btn = tk.Button(self,
+                                   bg= 'green' if self.model.is_operational else 'light grey', 
+                                   text= "start", 
+                                   command= self.stop_gcu if self.model.is_operational else self.start_gcu)
+
         self.rate_ui.pack()
         self.canvas.pack()
         self.label.pack()
+        self.start_btn.pack()
+
+    def stop_gcu(self):
+        self.start_btn.configure(bg='light grey', text="start", command=self.start_gcu)
+        self.model.stop_gcu()
+
+    def start_gcu(self):
+        self.start_btn.config(bg='green', text="stop", command=self.stop_gcu)
+        self.model.start_gcu()
 
     def update(self):
         rate = self.rate.get()

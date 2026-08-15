@@ -88,3 +88,21 @@ class Enviromental_GUI(tk.LabelFrame):
         self.air_temp.set(round(to_degC(enviroment.T_air), 2))
         self.sea_temp.set(round(to_degC(enviroment.T_sea), 2))
         self.sea_state.set(enviroment.sea_state)
+
+class Options(tk.Frame):
+    def __init__(self, parent, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
+        #let the user decide the time step
+        self.time_step = LabelInput(self, tk.Listbox, 
+                                    input_args={'values': [1, 10, 30, 60, 120], 'width': 10}, 
+                                    label_args={'text': "Time step"})
+        self.time_step.grid(row=0, padx=5, pady=5)
+        #start simulation by pressing start
+        self.start_button = tk.Button(self, text='Start', width=20, relief='groove')
+        self.start_button.grid(row = 1, padx=5, pady=5)
+        #pause simulation
+        self.pause_button = tk.Button(self, text='Pause', relief='groove')
+        self.pause_button.grid(row = 2, padx=5, pady=5, sticky='we')
+        #step button control
+        self.step_button = tk.Button(self, text="Step", relief='groove')
+        self.step_button.grid(row = 3, padx=5, pady=5, sticky='we')
