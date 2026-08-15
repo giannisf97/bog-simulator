@@ -22,8 +22,8 @@ class MEGI_UI(tk.Frame):
 
     def _draw_hmi(self):
         input_args = {
-            'from_': 45,
-            'to': 72,
+            'from_': self.model.rpm_limit["min"],
+            'to': self.model.rpm_limit["max"],
             'increment': 1,
             'textvariable': self.rpm,
             'width': 10
@@ -36,8 +36,11 @@ class MEGI_UI(tk.Frame):
         canvas = tk.Canvas(self, width= 50, height= 75)
         canvas.create_image(25, 35, image= self._img)
 
+        self.type_label = tk.Label(self, text=self.model.type)
+
         self.rpm_ui.pack()
         canvas.pack()
+        self.type_label.pack()
         self.m_gas_ui.pack()
 
     def update(self):
@@ -48,9 +51,15 @@ class MEGI_UI(tk.Frame):
 
 
 if __name__ == "__main__":
+    megi_config = {
+        "type": "5G70ME-C-GI Tier III",
+        "rpm": 65,
+        "is_operational": True
+    }
+
     root = tk.Tk()
-    megi_gui = MEGI_UI(root, megi.MEGI(65))
-
-    megi_gui.pack()
-
+    megi_gui = MEGI_UI(root, megi.MEGI(**megi_config))
+    megi_gui2 = MEGI_UI(root, megi.MEGI(**megi_config))
+    megi_gui.pack(side="left")
+    megi_gui2.pack(side="left")
     root.mainloop()

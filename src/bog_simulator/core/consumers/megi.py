@@ -1,12 +1,21 @@
 from bog_simulator.physics.thermodynamics import megi_consumption
 
 class MEGI:
-    def __init__(self, rpm):
-        self.update(rpm)
+    rpm_limit = {
+        "min": 45,
+        "max": 73
+    }
+    def __init__(self, **megi_config):
+        config = megi_config or {}
+
+        self.type = config["type"]
+        self._is_operational = config["is_operational"]
+        self.update(config["rpm"])
 
     def update(self, rpm):
-        self.rpm = rpm
-        self.m_gas = megi_consumption(self.rpm)
+        if self.rpm_limit["max"] >= rpm >= self.rpm_limit["min"]:
+            self.rpm = rpm
+            self.m_gas = self._is_operational * megi_consumption(self.rpm)
 
 #testing
 if __name__ == "__main__":
