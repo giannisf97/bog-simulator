@@ -9,13 +9,15 @@ from bog_simulator.core.consumers import megi
 
 from bog_simulator.ui.components import LabelInput, LabelValue
 
+from bog_simulator.physics import per
+
 class MEGI_UI(tk.Frame):
     def __init__(self, parent, model: megi.MEGI, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
         self.model = model
 
         self.rpm = tk.IntVar(value=self.model.rpm)
-        self.m_gas = tk.DoubleVar(value=round(self.model.m_gas, 2))
+        self.m_gas = tk.DoubleVar(value=round(per.hour(self.model.m_gas), 2))
 
         self._img = resize_img.import_image(RESOURCE_DIR / "megi_img.png", width=50, height=70)
         self._draw_hmi()
@@ -46,8 +48,8 @@ class MEGI_UI(tk.Frame):
     def update(self):
         rpm = self.rpm.get()
         self.model.update(rpm)
-        m_gas = self.model.m_gas
-        self.m_gas.set(round(m_gas, 2))
+        new_m_gas = self.model.m_gas
+        self.m_gas.set(round(per.hour(new_m_gas), 2))
 
 
 if __name__ == "__main__":
