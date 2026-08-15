@@ -1,8 +1,17 @@
 class GCU:
     '''Models Gas Combustion Unit'''
-    def __init__(self, rate: int):
-        self.rate = rate
+    capacity = {"min": 0, "max": 3300}
+    def __init__(self, **gcu_parameters):
+        config = gcu_parameters or {}
+        self._is_operational = config["is_operational"]
+        self.update(config["rate"]) 
+
+    def start_gcu(self):
+        self._is_operational = True
+
+    def stop_gcu(self):
+        self._is_operational = False
 
     def update(self, rate):
-        if 3100>= rate >= 0:
-            self.rate = rate
+        if self.capacity["max"] >= rate >= self.capacity["min"]:
+            self.rate = rate * self._is_operational

@@ -19,8 +19,8 @@ class GCU_UI(tk.Frame):
 
     def _draw_hmi(self):
         input_args = {
-            'from_': 0,
-            'to': 3100,
+            'from_': self.model.capacity["min"],
+            'to': self.model.capacity["max"],
             'increment': 100,
             'textvariable': self.rate,
             'width': 10
@@ -31,9 +31,12 @@ class GCU_UI(tk.Frame):
 
         self.canvas = tk.Canvas(self, width= 50, height= 70)
         self.canvas.create_image(25, 35, image= self._img)
-        
+
+        self.label = tk.Label(self, text="GCU")
+
         self.rate_ui.pack()
         self.canvas.pack()
+        self.label.pack()
 
     def update(self):
         rate = self.rate.get()
@@ -41,9 +44,16 @@ class GCU_UI(tk.Frame):
 
 
 
+
 if __name__ == "__main__":
+    gcu_config = {
+        "rate": 2000,
+        "is_operational": True
+    }
     root = tk.Tk()
-    gcu_hmi = GCU_UI(root, gcu.GCU(1500), width= 50, height=70)
-    gcu_hmi.pack()
+    gcu_hmi1 = GCU_UI(root, gcu.GCU(**gcu_config))
+    gcu_hmi2 = GCU_UI(root, gcu.GCU(**gcu_config))
+    gcu_hmi1.pack(side='left')
+    gcu_hmi2.pack(side= "left")
 
     root.mainloop()
