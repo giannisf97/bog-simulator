@@ -30,7 +30,6 @@ class LNGc:
 
     def update_pressure(self, dt : int) -> float:
         '''Updates the conditions of all the tanks per dt'''
-        print(self.cons.total_consumption())
         for tank in self.tanks:
             tank.P_tank += total_dp(self.tanks, self.cons.total_consumption(), self.prod, dt) / 100
             if tank.P_tank >330:
