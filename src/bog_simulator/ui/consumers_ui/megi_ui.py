@@ -40,10 +40,24 @@ class MEGI_UI(tk.Frame):
 
         self.type_label = tk.Label(self, text=self.model.type)
 
+        self.start_btn = tk.Button(self,
+                                   bg= 'green' if self.model.is_operational else 'light grey', 
+                                   text= "stop" if self.model.is_operational else 'start', 
+                                   command= self.stop_engine if self.model.is_operational else self.start_engine)
+        
         self.rpm_ui.pack()
         canvas.pack()
         self.type_label.pack()
         self.m_gas_ui.pack()
+        self.start_btn.pack()
+
+    def stop_engine(self):
+        self.start_btn.configure(bg='light grey', text="start", command=self.start_engine)
+        self.model.stop_engine()
+
+    def start_engine(self):
+        self.start_btn.config(bg='green', text="stop", command=self.stop_engine)
+        self.model.start_engine()
 
     def update(self):
         rpm = self.rpm.get()

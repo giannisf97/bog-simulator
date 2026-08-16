@@ -15,13 +15,19 @@ class DFDE:
         self.max_output = self.output_limits[self.type]["max"]
         self.min_output = self.output_limits[self.type]["min"]
 
-        self._is_operating = config["is_operating"]
+        self.is_operational = config["is_operating"]
         self.update(config["output"])
+
+    def start_dg(self):
+        self.is_operational = True
+
+    def stop_dg(self):
+        self.is_operational = False
 
     def update(self, output):
         if  self.min_output <= output <= self.max_output: 
             self.output = output
-            m_gas_new = self._is_operating * dfde_consumption(self.type, output)
+            m_gas_new = self.is_operational * dfde_consumption(self.type, output)
             self.m_gas = per.sec(m_gas_new)
 
 

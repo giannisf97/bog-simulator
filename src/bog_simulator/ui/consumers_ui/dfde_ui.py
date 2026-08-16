@@ -46,12 +46,24 @@ class DFDE_UI(tk.Frame):
 
         #type of genset
         self.type_label = tk.Label(self, text=self.model.type)
-
+        self.start_btn = tk.Button(self,
+                                   bg= 'green' if self.model.is_operational else 'light grey', 
+                                   text= "stop" if self.model.is_operational else 'start', 
+                                   command= self.stop_dg if self.model.is_operational else self.start_dg)
         self.output_ui.pack()
         self.canvas.pack()
         self.type_label.pack()
         self.m_gas_ui.pack()
+        self.start_btn.pack()
 
+    def stop_dg(self):
+        self.start_btn.configure(bg='light grey', text="start", command=self.start_dg)
+        self.model.stop_dg()
+
+    def start_dg(self):
+        self.start_btn.config(bg='green', text="stop", command=self.stop_dg)
+        self.model.start_dg()
+        
     def update(self):
         #receive value from controller
         output_new = self.output.get()

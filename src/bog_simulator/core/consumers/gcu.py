@@ -3,15 +3,15 @@ class GCU:
     capacity = {"min": 0, "max": 3300}
     def __init__(self, **gcu_parameters):
         config = gcu_parameters or {}
-        self._is_operational = config["is_operational"]
+        self.is_operational = config["is_operational"]
         self.update(config["rate"]) 
 
     def start_gcu(self):
-        self._is_operational = True
+        self.is_operational = True
 
     def stop_gcu(self):
-        self._is_operational = False
+        self.is_operational = False
 
     def update(self, rate):
         if self.capacity["max"] >= rate >= self.capacity["min"]:
-            self.rate = rate * self._is_operational
+            self.rate = rate * self.is_operational

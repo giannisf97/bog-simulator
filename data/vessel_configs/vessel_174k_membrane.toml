@@ -47,3 +47,37 @@ Liquid_Volume = 47_238.654 # m^3
 Tank_Pressure = 128 #mbar
 Geometry = {breadth = 41.86, height = 27.7, length = 48.68, h1 = 10.14, h2 = 8.0}
 
+#=========CONSUMERS===========
+[[Main_Engines]]
+type = "5G70ME-C-GI Tier III"
+rpm = 65
+is_operational = 1
+
+[[Main_Engines]]
+type = "5G70ME-C-GI Tier III"
+rpm = 65
+is_operational = 1
+
+[[Diesel_Generators]]
+type = 'W6L34DF'
+is_operating = 1
+output = 2200
+
+[[Diesel_Generators]]
+type = 'W8L34DF'
+is_operating = 0
+output = 2800
+
+[[Diesel_Generators]]
+type = 'W8L34DF'
+is_operating = 1
+output = 3500
+
+[[Diesel_Generators]]
+type = 'W6L34DF'
+is_operating = 0
+output = 2400
+
+[Gcu]
+rate = 2000
+is_operational = 0
