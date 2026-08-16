@@ -4,6 +4,7 @@ from tkinter import ttk
 from bog_simulator.config import RESOURCE_DIR
 
 from bog_simulator.core.consumers import gcu
+from bog_simulator.physics import per
 
 from bog_simulator.utils import resize_img
 
@@ -13,7 +14,7 @@ class GCU_UI(tk.Frame):
     def __init__(self, parent, model: gcu.GCU, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.model = model
-        self.rate = tk.IntVar(value=self.model.rate)
+        self.rate = tk.IntVar(value=int(per.hour(self.model.m_gas)))
         self._img = resize_img.import_image(RESOURCE_DIR / "gcu_hmi.png", 50, 70)
         self._draw_hmi()
 

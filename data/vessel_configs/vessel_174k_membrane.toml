@@ -80,4 +80,4 @@ output = 2400
 
 [Gcu]
 rate = 2000
-is_operational = 0
+is_operational = 1

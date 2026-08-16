@@ -30,28 +30,6 @@ class LabelValue(tk.Frame):
         self.text.grid(row=0, column=0)
         self.value.grid(row=0, column=1)
 
-class Control_Panel(tk.Frame):
-    def __init__(self, parent, *args, **kwargs) -> None:
-        super().__init__(parent, *args, **kwargs)
-        #consumption rate control
-        self.consumption_rate = tk.DoubleVar()
-        self.consumption_rate.set(-parent.lngc_gui.model.cons)
-        self.consumption_spinbox = LabelInput(self, ttk.Spinbox, label_args={'text': "Consumption"}, 
-                                              input_args={'from_': 0, 'to': 5000, 'increment': 50, 'textvariable':self.consumption_rate})
-        self.consumption_spinbox.grid(row = 0, sticky = 'we', padx=5, pady=5)
-
-        #let the user decide the time step
-        self.time_step = LabelInput(self, tk.Listbox, input_args={'values': [1, 10, 30, 60, 120]}, label_args={'text': "Time step"})
-        self.time_step.grid(row=1, sticky='we', padx=5, pady=5)
-        #start simulation by pressing start
-        self.start_button = tk.Button(self, text='Start', command = parent.on_start, relief='groove')
-        self.start_button.grid(row = 2, sticky = 'we', padx=5, pady=5)
-        #pause simulation
-        self.pause_button = tk.Button(self, text='Pause', width=50, command=parent.on_pause, relief='groove')
-        self.pause_button.grid(row = 3, sticky = 'we', padx=5, pady=5)
-        #step button control
-        self.step_button = tk.Button(self, text="Step", command=parent.step, relief='groove')
-        self.step_button.grid(row = 4, sticky = 'we', padx=5, pady=5)
 
 class Enviromental_GUI(tk.LabelFrame):
     '''Displays various Environmental variables'''
@@ -90,7 +68,7 @@ class Enviromental_GUI(tk.LabelFrame):
         self.sea_state.set(enviroment.sea_state)
 
 class Options(tk.Frame):
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent, start, pause, step, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         #let the user decide the time step
         self.time_step = LabelInput(self, tk.Listbox, 
@@ -98,11 +76,11 @@ class Options(tk.Frame):
                                     label_args={'text': "Time step"})
         self.time_step.grid(row=0, padx=5, pady=5)
         #start simulation by pressing start
-        self.start_button = tk.Button(self, text='Start', width=20, relief='groove')
+        self.start_button = tk.Button(self, text='Start', width=20, relief='groove', command= lambda: start(self.start_button))
         self.start_button.grid(row = 1, padx=5, pady=5)
         #pause simulation
-        self.pause_button = tk.Button(self, text='Pause', relief='groove')
+        self.pause_button = tk.Button(self, text='Pause', command= lambda: pause(self.start_button), relief='groove')
         self.pause_button.grid(row = 2, padx=5, pady=5, sticky='we')
         #step button control
-        self.step_button = tk.Button(self, text="Step", relief='groove')
+        self.step_button = tk.Button(self, text="Step", command= step, relief='groove')
         self.step_button.grid(row = 3, padx=5, pady=5, sticky='we')

@@ -26,7 +26,7 @@ class LNGC_GUI(tk.Frame):
         self.model.update_internal_timer(dt)
         self.model.update_enviroment_conditions() 
         self.model.vapor_header = self.model.update_pressure(dt)# update the pressure in the Vapor header
-        self.model.stats.fetch_data(self.model.vapor_header, self.model.cons, dt)
+        self.model.stats.fetch_data(self.model.vapor_header, self.model.cons.total_consumption(), dt)
         #for all the tanks update their values
         for tank in self.tanks:
             tank.update(dt, self.model.env)

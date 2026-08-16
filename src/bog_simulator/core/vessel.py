@@ -2,6 +2,7 @@ import numpy as np
 
 from bog_simulator.core import environment as env
 from bog_simulator.core import tank as tnk
+from bog_simulator.core.consumers import consumer
 
 from bog_simulator.physics.thermodynamics import total_dp
 
@@ -10,10 +11,10 @@ from bog_simulator.utils.statistics import Statistics
 class LNGc:
     internal_timer = 0 # timer for seconds running simulation
     '''174k DW Lng carrier model'''
-    def __init__(self, tank_params: list, enviroment: env.Environment, consumption: float, production: float) -> None:
+    def __init__(self, tank_params: list, enviroment: env.Environment, consumption: consumer.Consumers, production: float) -> None:
         #--initialize interfering conditions--
         self.env = enviroment # enviromental condition class
-        self.cons = consumption # Total consumption kg/h
+        self.cons = consumption # consumers class
         self.prod = production # Total production kg/h
         self.tank_config = tank_params
         #---Contains---
@@ -21,7 +22,7 @@ class LNGc:
         self.vapor_header = np.mean([tank.P_tank for tank in self.tanks]) # Vapor header pressure let be the mean pressure of the tanks
 
         #---Data acquisition---
-        self.stats = Statistics(self.vapor_header, self.cons)
+        self.stats = Statistics(self.vapor_header, self.cons.total_consumption())
 
     def init_tanks(self, tank_params: list):
         '''Helper method return a list of MembraneTank models'''
@@ -29,8 +30,9 @@ class LNGc:
 
     def update_pressure(self, dt : int) -> float:
         '''Updates the conditions of all the tanks per dt'''
+        print(self.cons.total_consumption())
         for tank in self.tanks:
-            tank.P_tank += total_dp(self.tanks, self.cons, self.prod, dt) / 100
+            tank.P_tank += total_dp(self.tanks, self.cons.total_consumption(), self.prod, dt) / 100
             if tank.P_tank >330:
                 tank.P_tank = 330
             elif tank.P_tank < 0:
@@ -48,7 +50,7 @@ class LNGc:
         self.update_enviroment_conditions()
         self.vapor_header = self.update_pressure(dt)
 
-        self.stats.fetch_data(self.vapor_header, self.cons, dt)
+        self.stats.fetch_data(self.vapor_header, self.cons.total_consumption(), dt)
 
         for tank in self.tanks:
             tank.update(dt, self.env)

@@ -47,11 +47,11 @@ def vapor_temp(capacity : int, liquid_volume : float, liquid_temp : float) -> fl
 def total_dp(tanks, cons, prod, dt):
     '''Calculates the pressure build-up in all the cargo tanks'''
     return ((R * mean_vapor_temp(tanks)) / (total_vapor_vol(tanks) * M)) * (
-            total_mbog(tanks) + (cons + prod) / 3600) * dt
+            total_mbog(tanks) + prod - cons) * dt
 
 
 def megi_consumption(rpm):
-    formula = (0.00441 * pow(rpm, 3) - 0.042 * pow(rpm, 2) +0.95 * rpm) #kg/h
+    formula = 0.00441 * pow(rpm, 3) - 0.042 * pow(rpm, 2) + 0.95 * rpm #kg/h
     return formula
 
 def dfde_consumption(type, output):

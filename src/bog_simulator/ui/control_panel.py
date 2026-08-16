@@ -6,12 +6,12 @@ from bog_simulator.ui import components
 
 from bog_simulator.core.consumers import consumer, gcu, megi, dfde
 from bog_simulator.core import environment
-
+from bog_simulator.physics import per
 from bog_simulator.utils.data_loader import load_vessel_data, load_weather_variables
 
 
 class Consumer_Panel(tk.LabelFrame):
-    def __init__(self, parent, model: consumer.Consumers, model_env:environment.Environment,  *args, **kwargs):
+    def __init__(self, parent, model: consumer.Consumers, model_env:environment.Environment, start, pause, step, *args, **kwargs):
         super().__init__(parent, text="Control Panel", *args, **kwargs)
         self.model = model
         self.model_env = model_env
@@ -20,8 +20,11 @@ class Consumer_Panel(tk.LabelFrame):
         self.genSets_hmi = [dfde_ui.DFDE_UI(self, genSet_model) for genSet_model in model.gensets]
         self.mainEngines_hmi = [megi_ui.MEGI_UI(self, mainEngine_model) for mainEngine_model in model.mainEngines]
         self.enviroment_ui = components.Enviromental_GUI(self, self.model_env)
-        self.options_ui = components.Options(self)
+        self.options_ui = components.Options(self, start, pause, step)
 
+        self.consumption = tk.DoubleVar(value= round(per.hour(self.model.total_consumption()), 2))
+
+        self.labelValue = components.LabelValue(self, textvariable=self.consumption, text="Consumption")
         self._draw_control_hmi()
 
     def _draw_control_hmi(self):
@@ -42,6 +45,21 @@ class Consumer_Panel(tk.LabelFrame):
         #======Options==========
         self.options_ui.grid(row=2, column=2, columnspan=2)
 
+        ########## consumption#############
+        self.labelValue.grid(row=3, column=0, columnspan=4)
+
+    def update(self):
+        self.gcu_hmi.update()
+        for genSet_hmi in self.genSets_hmi:
+            genSet_hmi.update()
+        for mainEngine_hmi in self.mainEngines_hmi:
+            mainEngine_hmi.update()
+
+        self.consumption.set(round(per.hour(self.model.total_consumption()), 2)) 
+
+    def set_weather_variables(self, weather_variables):
+        self.enviroment_ui.set_values(weather_variables)
+
 if __name__ == "__main__":
     root = tk.Tk()
 
@@ -52,9 +70,9 @@ if __name__ == "__main__":
     dfdes_model = [dfde.DFDE(**dfde_params) for dfde_params in vessel["Diesel_Generators"]]
     gcu_model = gcu.GCU(**vessel["Gcu"])
     model_enviroment = environment.Environment(vessel["vessel"], enviroment_variables)
-    model = consumer.Consumers(dfdes_model, megi_models, gcu_model)
+    model_consumers = consumer.Consumers(dfdes_model, megi_models, gcu_model)
 
-    consumer_panel = Consumer_Panel(root, model=model, model_env=model_enviroment)
+    consumer_panel = Consumer_Panel(root, model=model_consumers, model_env=model_enviroment)
 
     consumer_panel.pack(padx=10, pady=10, expand=True)
 

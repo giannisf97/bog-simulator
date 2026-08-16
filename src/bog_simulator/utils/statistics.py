@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 
+from bog_simulator.physics import per
+
 class Statistics:
     def __init__(self, press, consumption):
         self.total_time = 0
@@ -11,7 +13,7 @@ class Statistics:
     def fetch_data(self, press, consumption, dt):
         self.total_time += dt
         self.press.append(press)
-        self.consumption.append(-consumption)
+        self.consumption.append(per.hour(consumption))
         self.time.append(self.total_time/3600) # in hours
 
     def show_plot(self):

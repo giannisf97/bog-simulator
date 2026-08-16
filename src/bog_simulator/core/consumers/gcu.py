@@ -1,3 +1,5 @@
+from bog_simulator.physics import per
+
 class GCU:
     '''Models Gas Combustion Unit'''
     capacity = {"min": 0, "max": 3300}
@@ -14,4 +16,5 @@ class GCU:
 
     def update(self, rate):
         if self.capacity["max"] >= rate >= self.capacity["min"]:
-            self.rate = rate * self.is_operational
+            m_gas_new = per.sec(rate)
+            self.m_gas = m_gas_new * self.is_operational
