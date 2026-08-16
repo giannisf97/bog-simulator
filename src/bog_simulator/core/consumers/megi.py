@@ -23,11 +23,7 @@ class MEGI:
     def update(self, rpm):
         if self.rpm_limit["max"] >= rpm >= self.rpm_limit["min"]:
             self.rpm = rpm
-<<<<<<< HEAD
-            self.m_gas = self._is_operational * per.sec(megi_consumption(self.rpm))
-=======
             self.m_gas = self.is_operational * megi_consumption(self.rpm)
->>>>>>> consumer-control-panel
 
 #testing
 if __name__ == "__main__":
