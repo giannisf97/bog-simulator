@@ -71,10 +71,10 @@ class Options(tk.Frame):
     def __init__(self, parent, start, pause, step, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         #let the user decide the time step
-        self.time_step = LabelInput(self, tk.Listbox, 
-                                    input_args={'values': [1, 10, 30, 60, 120], 'width': 10}, 
-                                    label_args={'text': "Time step"})
-        self.time_step.grid(row=0, padx=5, pady=5)
+        # self.time_step = LabelInput(self, tk.Listbox, 
+        #                             input_args={'values': [1, 10, 30, 60, 120], 'width': 10}, 
+        #                             label_args={'text': "Time step"})
+        # self.time_step.grid(row=0, padx=5, pady=5)
         #start simulation by pressing start
         self.start_button = tk.Button(self, text='Start', width=20, relief='groove', command= lambda: start(self.start_button))
         self.start_button.grid(row = 1, padx=5, pady=5)

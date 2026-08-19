@@ -21,6 +21,6 @@ def load_vessel_data() -> dict:
         return vessel_data
 
 def load_weather_variables() -> pd.DataFrame:
-    file_path = DATA_DIR / "enviromental" / "enviromental_data_081L.csv"
+    file_path = DATA_DIR / "enviromental" / "weather.csv"
     weather_df = pd.read_csv(file_path)
     return weather_df

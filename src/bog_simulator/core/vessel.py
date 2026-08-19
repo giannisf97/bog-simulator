@@ -39,9 +39,8 @@ class LNGc:
         return np.mean([tank.P_tank for tank in self.tanks])
 
     def update_enviroment_conditions(self):
-        #when 1 day passed update enviromental conditions
-        if self.internal_timer % 86_400 == 0 and self.internal_timer != 0:
-            self.env.update()
+        #when 1 hour passed
+        self.env.update()
 
     def update_tanks(self, dt : int) -> float:
         '''Updates the conditions of all the tanks per dt'''

@@ -17,17 +17,17 @@ class Environment:
 
     def set_variables(self) -> None:
         '''Helper method to set weather variables'''
-        self.date = self.df["Date"].iloc[self.ic] # datetime
+        self.date = self.df["date"].iloc[self.ic] # datetime
 
-        self.sea_state = self.df["State"].iloc[self.ic] # BN
+        self.sea_state = self.df["wind_speed_10m"].iloc[self.ic] # BN
 
         self.voyage = self.vessel_data["voyage"] # 'L' or 'B'
 
-        self.T_air = to_Kelvin(self.df["temperature_2m"].iloc[self.ic]) # Air temp [K]
+        self.T_air = to_Kelvin(self.df["apparent_temperature"].iloc[self.ic]) # Air temp [K]
         self.T_sea = to_Kelvin(self.df["sea_surface_temperature"].iloc[self.ic]) # Sea water temp [K]
         self.T_coff = to_Kelvin(self.vessel_data["cofferdam_space"]) # deg C
 
-        self.atm = self.df["surface_pressure"].iloc[self.ic] # Atmospheric pressure [mbar]
+        self.atm = self.df["pressure_msl"].iloc[self.ic] # Atmospheric pressure [mbar]
 
         self.draft =  self.vessel_data["draft"]
 

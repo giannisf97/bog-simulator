@@ -35,7 +35,7 @@ class Simulation_GUI(tk.Tk):
     def _fetch_selection(self):
         '''Fetch consumption and time step'''
         self.lngc_gui.model.cons = self.control_panel.model
-        self.time_step = int(self.control_panel.options_ui.time_step.get()) * 60
+        self.time_step = 3600
 
     def _update_all(self):
         '''Update model and UI variables'''
