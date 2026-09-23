@@ -4,7 +4,7 @@
 
 # BOG Simulator (Boil-Off Gas Simulator for LNG Carriers)
 
-A high-fidelity thermodynamic and hydrodynamic simulation platform for **Boil-Off Gas (BOG)** generation, cargo tank pressure management, and dual-fuel consumption dynamics in **174,000 m³ Membrane-Type Liquefied Natural Gas Carriers (LNGC)**.
+A thermodynamic and hydrodynamic simulation platform for **Boil-Off Gas (BOG)** generation, cargo tank pressure management, and dual-fuel consumption dynamics in **174,000 m³ Membrane-Type Liquefied Natural Gas Carriers (LNGC)**.
 
 Built with Python, Tkinter, NumPy, Pandas, and Matplotlib.
 
@@ -348,3 +348,7 @@ This project currently operates as an initial **Minimum Viable Product (MVP)**. 
 ### Technical Documentation (Project Repository)
 Found inside the local [`docs/`](docs/) directory:
 - **`docs/manuals/giignl_custody_transfer_handbook_6.0_-_may_21_0-1 (1).pdf`**: Official custody transfer and calculation protocols.
+
+## Trademarks & Disclaimer
+
+All brand names, engine models, and trademarks (e.g., MAN Energy Solutions, Wärtsilä, GTT) referenced in this project belong to their respective owners. Their mention is strictly for academic, educational, and physical simulation purposes, and does not imply endorsement or official affiliation.
