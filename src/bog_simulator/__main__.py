@@ -1,3 +1,5 @@
+"""Main entry point for the BOG Simulator application."""
+
 from bog_simulator.ui import app
 
 from bog_simulator.core import vessel, environment
@@ -6,6 +8,7 @@ from bog_simulator.core.consumers import megi, dfde, gcu, consumer
 from bog_simulator.utils import data_loader
 
 def main() -> None:
+    """Bootstraps models from configuration datasets and launches the Tkinter GUI."""
     vessel_config = data_loader.load_vessel_data()
     enviroment_variables = data_loader.load_weather_variables()
 

@@ -1,3 +1,15 @@
+"""
+DFDE (Dual Fuel Diesel Generator) UI Component.
+
+Provides graphical control and telemetry display for individual auxiliary
+DFDE generator sets, including electric power output regulation [kW],
+generator start/stop toggling, and fuel gas consumption monitoring [kg/h].
+"""
+
+from typing import Any
+from pathlib import Path
+from PIL import ImageTk
+
 from tkinter import ttk
 import tkinter as tk
 
@@ -11,21 +23,51 @@ from bog_simulator.physics import per
 
 from bog_simulator.config import RESOURCE_DIR
 
-image = RESOURCE_DIR / "dfde_img.png"
+image: Path = RESOURCE_DIR / "dfde_img.png"
 
 class DFDE_UI(tk.Frame):
-    def __init__(self, parent, model: dfde.DFDE, *args, **kwargs):
+    """
+    Tkinter frame component for controlling and monitoring a DFDE generator set.
+
+    Attributes:
+        model (DFDE): Underlying DFDE generator simulation model instance.
+        output (tk.IntVar): Electric power output setpoint [kW].
+        m_gas (tk.DoubleVar): Displayed gas fuel consumption [kg/h].
+        _img (PhotoImage): Rendered thumbnail of the DFDE engine.
+        start_btn (tk.Button): Button toggling generator operational state.
+    """
+    model: dfde.DFDE
+    output: tk.IntVar
+    m_gas: tk.DoubleVar
+    _img: ImageTk.PhotoImage
+    canvas: tk.Canvas
+    output_ui: LabelInput
+    m_gas_ui: LabelValue
+    type_label: tk.Label
+    start_btn: tk.Button
+
+    def __init__(self, parent: tk.Misc, model: dfde.DFDE, *args: Any, **kwargs: Any) -> None:
+        """
+        Initialize the DFDE UI control panel.
+
+        Args:
+            parent (tk.Widget): Parent Tkinter container.
+            model (dfde.DFDE): DFDE generator model instance.
+            *args: Variable length argument list for tk.Frame.
+            **kwargs: Arbitrary keyword arguments for tk.Frame.
+        """
         super().__init__(parent, *args, **kwargs)
 
         self.model = model
 
-        self.output = tk.IntVar(value= self.model.output)
+        self.output = tk.IntVar(value=int(self.model.output))
         self.m_gas = tk.DoubleVar(value= round(per.hour(self.model.m_gas), 2))
         
         self._img = resize.import_image(image, width= 50, height= 70)
         self._draw_hmi()
 
-    def _draw_hmi(self):
+    def _draw_hmi(self) -> None:
+        """Build and pack HMI controls (kW input, engine icon, status, consumption)."""
         #set image of the consumer
         self.canvas = tk.Canvas(self, width= 50, height= 70)
         self.canvas.create_image(25, 35, image= self._img)
@@ -56,15 +98,23 @@ class DFDE_UI(tk.Frame):
         self.m_gas_ui.pack()
         self.start_btn.pack()
 
-    def stop_dg(self):
+    def stop_dg(self) -> None:
+        """Shut down the diesel generator and update UI button state."""
         self.start_btn.configure(bg='light grey', text="start", command=self.start_dg)
         self.model.stop_dg()
 
-    def start_dg(self):
+    def start_dg(self) -> None:
+        """Start the diesel generator and update UI button state."""
         self.start_btn.config(bg='green', text="stop", command=self.stop_dg)
         self.model.start_dg()
         
-    def update(self):
+    def update(self) -> None:
+        """
+        Synchronize UI electric load setpoint to model and refresh consumption readout.
+
+        Reads target power output [kW] from the spinbox, updates the model quadratic
+        consumption calculation, and sets displayed kg/h.
+        """
         #receive value from controller
         output_new = self.output.get()
 

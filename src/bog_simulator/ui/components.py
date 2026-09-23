@@ -1,10 +1,35 @@
+"""Reusable graphical widgets for the BOG Simulator user interface."""
+
+from typing import Any, Callable, TYPE_CHECKING
+
 import tkinter as tk
 from tkinter import ttk
 from bog_simulator.physics.thermodynamics import to_degC
 
+if TYPE_CHECKING:
+    from bog_simulator.core.environment import Environment
 
 class LabelInput(ttk.Frame):
-    def __init__(self, parent, input_class : tk.Widget | ttk.Widget, input_args = None , label_args = None, *args, **kwargs):
+    """Compound widget combining a text label with an input entry (Spinbox or Combobox)."""
+    input: ttk.Spinbox | ttk.Combobox
+
+    def __init__(
+        self,
+        parent: tk.Misc,
+        input_class: type[tk.Widget | ttk.Widget],
+        input_args: dict[str, Any] | None = None,
+        label_args: dict[str, Any] | None = None,
+        *args: Any,
+        **kwargs: Any
+    ) -> None:
+        """Initializes a LabelInput compound widget.
+
+        Args:
+            parent: Parent Tkinter widget.
+            input_class: Input widget class (e.g. ttk.Spinbox or ttk.Combobox).
+            input_args (dict): Keyword arguments passed to the input widget.
+            label_args (dict): Keyword arguments passed to the label widget.
+        """
         super().__init__(parent, *args, **kwargs)
         input_args = input_args or {}
         label_args = label_args or {}
@@ -17,23 +42,40 @@ class LabelInput(ttk.Frame):
             self.input = ttk.Combobox(self, **input_args)
             self.input.grid(row=0, column=1)
 
-    def get(self):
-        return self.input.get()
+    def get(self) -> str:
+        """Retrieves the current value from the embedded input widget."""
+        return str(self.input.get())
 
 class LabelValue(tk.Frame):
-    '''Child class of tk.Frame widget representing label and value for various parameters of the tank'''
-    def __init__(self, parent : tk.Widget, textvariable : tk.Variable = None, text : str= None,  *args, **kwargs) -> None:
+    """Compound widget displaying a static label text alongside a dynamic variable value."""
+    def __init__(self, parent: tk.Misc, textvariable: tk.Variable | None = None, text: str = "", *args: Any, **kwargs: Any) -> None:
+        """Initializes a LabelValue widget.
+
+        Args:
+            parent (tk.Misc): Parent container.
+            textvariable (tk.Variable): Tkinter variable bound to the numerical display.
+            text (str): Descriptive label text.
+        """
         super().__init__(parent, *args, **kwargs)
         self.text = tk.Label(self, text=text) #label text for example 'Avg. Liquid Temp', 'Avg. Vapor temp' etc.
-        self.value = tk.Label(self, textvariable=textvariable, bg='light grey') #A parameter value of the tank
+        val_kwargs: dict[str, Any] = {"bg": "light grey"}
+        if textvariable is not None:
+            val_kwargs["textvariable"] = textvariable
+        self.value = tk.Label(self, **val_kwargs) #A parameter value of the tank
         #place side by side
         self.text.grid(row=0, column=0)
         self.value.grid(row=0, column=1)
 
 
 class Enviromental_GUI(tk.LabelFrame):
-    '''Displays various Environmental variables'''
-    def __init__(self, parent, enviroment, *args, **kwargs):
+    """HUD frame displaying current voyage environmental and oceanographic conditions."""
+    def __init__(self, parent: tk.Misc, enviroment: "Environment", *args: Any, **kwargs: Any) -> None:
+        """Initializes the Environmental_GUI HUD panel.
+
+        Args:
+            parent: Parent Tkinter widget.
+            enviroment (Environment): Environment model providing weather telemetry.
+        """
         super().__init__(parent, *args, **kwargs)
         #--init values to be displayed--
         self.date = tk.StringVar()
@@ -59,8 +101,8 @@ class Enviromental_GUI(tk.LabelFrame):
         self.sea_LabelVal.grid(row=2, column=0)
         self.state_LabelVal.grid(row= 2, column= 1)
 
-    def set_values(self, enviroment):
-        '''Method to set values in each time step'''
+    def set_values(self, enviroment: "Environment") -> None:
+        """Updates all displayed weather variables from the Environment instance."""
         self.date.set(enviroment.date)
         self.atm.set(round(enviroment.atm, 2))
         self.air_temp.set(round(to_degC(enviroment.T_air), 2))
@@ -68,13 +110,25 @@ class Enviromental_GUI(tk.LabelFrame):
         self.sea_state.set(enviroment.sea_state)
 
 class Options(tk.Frame):
-    def __init__(self, parent, start, pause, step, *args, **kwargs):
+    """Control frame housing the Start, Pause, and Step simulation execution buttons."""
+    def __init__(
+        self,
+        parent: tk.Misc,
+        start: Callable[[tk.Button], None],
+        pause: Callable[[tk.Button], None],
+        step: Callable[[], None],
+        *args: Any,
+        **kwargs: Any
+    ) -> None:
+        """Initializes the simulation playback controls.
+
+        Args:
+            parent: Parent container.
+            start (callable): Start simulation callback.
+            pause (callable): Pause simulation callback.
+            step (callable): Single-step advance callback.
+        """
         super().__init__(parent, *args, **kwargs)
-        #let the user decide the time step
-        # self.time_step = LabelInput(self, tk.Listbox, 
-        #                             input_args={'values': [1, 10, 30, 60, 120], 'width': 10}, 
-        #                             label_args={'text': "Time step"})
-        # self.time_step.grid(row=0, padx=5, pady=5)
         #start simulation by pressing start
         self.start_button = tk.Button(self, text='Start', width=20, relief='groove', command= lambda: start(self.start_button))
         self.start_button.grid(row = 1, padx=5, pady=5)

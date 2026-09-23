@@ -1,3 +1,5 @@
+"""Machinery and consumers HMI control panel module."""
+
 import tkinter as tk
 import pandas as pd
 
@@ -10,8 +12,52 @@ from bog_simulator.physics import per
 from bog_simulator.utils.data_loader import load_vessel_data, load_weather_variables
 
 
+from typing import Any, Callable
+
 class Consumer_Panel(tk.LabelFrame):
-    def __init__(self, parent, model: consumer.Consumers, model_env:environment.Environment, start, pause, step, *args, **kwargs):
+    """Interactive control panel for propulsion engines, generators, GCU, and weather HUD.
+
+    Attributes:
+        model (consumer.Consumers): Consumers domain model instance.
+        model_env (environment.Environment): Environment domain model instance.
+        gcu_hmi (gcu_ui.GCU_UI): GCU control interface.
+        genSets_hmi (list[dfde_ui.DFDE_UI]): List of DFDE generator control widgets.
+        mainEngines_hmi (list[megi_ui.MEGI_UI]): List of ME-GI main engine control widgets.
+        enviroment_ui (components.Enviromental_GUI): Environmental conditions HUD widget.
+        options_ui (components.Options): Simulation start/pause/step controls.
+        consumption (tk.DoubleVar): Aggregated fuel gas consumption display [kg/h].
+    """
+    model: consumer.Consumers
+    model_env: environment.Environment
+    gcu_hmi: gcu_ui.GCU_UI
+    genSets_hmi: list[dfde_ui.DFDE_UI]
+    mainEngines_hmi: list[megi_ui.MEGI_UI]
+    enviroment_ui: components.Enviromental_GUI
+    options_ui: components.Options
+    consumption: tk.DoubleVar
+    labelValue: components.LabelValue
+
+    def __init__(
+        self,
+        parent: tk.Misc,
+        model: consumer.Consumers,
+        model_env: environment.Environment,
+        start: Callable[[tk.Button], None] = lambda b: None,
+        pause: Callable[[tk.Button], None] = lambda b: None,
+        step: Callable[[], None] = lambda: None,
+        *args: Any,
+        **kwargs: Any
+    ) -> None:
+        """Initializes the Consumer_Panel with consumer models and control callbacks.
+
+        Args:
+            parent: Parent Tkinter widget.
+            model (consumer.Consumers): Consumers domain model.
+            model_env (environment.Environment): Environment model.
+            start (callable): Callback for simulation start.
+            pause (callable): Callback for simulation pause.
+            step (callable): Callback for simulation single step.
+        """
         super().__init__(parent, text="Control Panel", *args, **kwargs)
         self.model = model
         self.model_env = model_env
@@ -27,7 +73,8 @@ class Consumer_Panel(tk.LabelFrame):
         self.labelValue = components.LabelValue(self, textvariable=self.consumption, text="Consumption")
         self._draw_control_hmi()
 
-    def _draw_control_hmi(self):
+    def _draw_control_hmi(self) -> None:
+        """Arranges machinery widgets, environmental HUD, and buttons in a grid layout."""
         #======GCU=======
         self.gcu_hmi.grid(row=0, column= 0)
 
@@ -48,7 +95,8 @@ class Consumer_Panel(tk.LabelFrame):
         ########## consumption#############
         self.labelValue.grid(row=3, column=0, columnspan=4)
 
-    def update(self):
+    def update(self) -> None:
+        """Refreshes all consumer HMI widgets and updates total fuel gas consumption readout."""
         self.gcu_hmi.update()
         for genSet_hmi in self.genSets_hmi:
             genSet_hmi.update()
@@ -57,7 +105,12 @@ class Consumer_Panel(tk.LabelFrame):
 
         self.consumption.set(round(per.hour(self.model.total_consumption()), 2)) 
 
-    def set_weather_variables(self, weather_variables):
+    def set_weather_variables(self, weather_variables: environment.Environment) -> None:
+        """Passes updated environmental variables to the environmental HUD widget.
+
+        Args:
+            weather_variables (Environment): Updated environmental model.
+        """
         self.enviroment_ui.set_values(weather_variables)
 
 if __name__ == "__main__":

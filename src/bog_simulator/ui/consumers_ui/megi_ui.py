@@ -1,3 +1,14 @@
+"""
+ME-GI Propulsion Engine UI Component.
+
+Provides graphical control and telemetry display for a MAN ME-GI
+high-pressure two-stroke main propulsion engine, including RPM setpoint
+adjustment, start/stop operation, and hourly gas consumption feedback.
+"""
+
+from typing import Any
+from PIL import ImageTk
+
 from tkinter import ttk
 import tkinter as tk
 
@@ -12,17 +23,46 @@ from bog_simulator.ui.components import LabelInput, LabelValue
 from bog_simulator.physics import per
 
 class MEGI_UI(tk.Frame):
-    def __init__(self, parent, model: megi.MEGI, *args, **kwargs) -> None:
+    """
+    Tkinter frame component for controlling and monitoring an ME-GI engine.
+
+    Attributes:
+        model (MEGI): Underlying ME-GI engine simulation model instance.
+        rpm (tk.IntVar): Engine rotational speed control variable [RPM].
+        m_gas (tk.DoubleVar): Displayed gas fuel consumption [kg/h].
+        _img (PhotoImage): Rendered thumbnail of the ME-GI engine.
+        start_btn (tk.Button): Button toggling operational / standby state.
+    """
+    model: megi.MEGI
+    rpm: tk.IntVar
+    m_gas: tk.DoubleVar
+    _img: ImageTk.PhotoImage
+    rpm_ui: LabelInput
+    m_gas_ui: LabelValue
+    type_label: tk.Label
+    start_btn: tk.Button
+
+    def __init__(self, parent: tk.Misc, model: megi.MEGI, *args: Any, **kwargs: Any) -> None:
+        """
+        Initialize the ME-GI UI control panel.
+
+        Args:
+            parent (tk.Widget): Parent Tkinter container.
+            model (megi.MEGI): ME-GI model instance.
+            *args: Variable length argument list for tk.Frame.
+            **kwargs: Arbitrary keyword arguments for tk.Frame.
+        """
         super().__init__(parent, *args, **kwargs)
         self.model = model
 
-        self.rpm = tk.IntVar(value=self.model.rpm)
+        self.rpm = tk.IntVar(value=int(self.model.rpm))
         self.m_gas = tk.DoubleVar(value=round(per.hour(self.model.m_gas), 2))
 
         self._img = resize_img.import_image(RESOURCE_DIR / "megi_img.png", width=50, height=70)
         self._draw_hmi()
 
-    def _draw_hmi(self):
+    def _draw_hmi(self) -> None:
+        """Build and pack HMI controls (RPM input, engine icon, status, consumption)."""
         input_args = {
             'from_': self.model.rpm_limit["min"],
             'to': self.model.rpm_limit["max"],
@@ -51,15 +91,23 @@ class MEGI_UI(tk.Frame):
         self.m_gas_ui.pack()
         self.start_btn.pack()
 
-    def stop_engine(self):
+    def stop_engine(self) -> None:
+        """Shut down the ME-GI engine and update the UI button appearance."""
         self.start_btn.configure(bg='light grey', text="start", command=self.start_engine)
         self.model.stop_engine()
 
-    def start_engine(self):
+    def start_engine(self) -> None:
+        """Start the ME-GI engine and update the UI button appearance."""
         self.start_btn.config(bg='green', text="stop", command=self.stop_engine)
         self.model.start_engine()
 
-    def update(self):
+    def update(self) -> None:
+        """
+        Synchronize UI inputs to the engine model and refresh displayed consumption.
+
+        Reads target RPM from the spinbox, updates the model physics, and converts
+        mass consumption rate from kg/s to displayed kg/h.
+        """
         rpm = self.rpm.get()
         self.model.update(rpm)
         new_m_gas = self.model.m_gas
