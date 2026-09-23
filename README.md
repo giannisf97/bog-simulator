@@ -80,10 +80,14 @@ The heat ingress rate $\dot{Q}$ [W] into each cargo tank is determined by:
 $$\dot{Q}_{\text{total}} = \left( \dot{Q}_{\text{sea}} + \dot{Q}_{\text{air}} + \dot{Q}_{\text{coff}} \right) \times \text{SSF}$$
 
 Where:
-- $\dot{Q}_i = U_i \cdot A_i \cdot (T_{i} - T_{\text{liquid}})$
-- $U_{\text{sea}} = 0.10\ \text{W/(m}^2\cdot\text{K)}$
-- $U_{\text{air}} = 0.12\ \text{W/(m}^2\cdot\text{K)}$
-- $U_{\text{coff}} = 0.14\ \text{W/(m}^2\cdot\text{K)}$
+
+$$
+\dot{Q}_i = U_i \cdot A_i \cdot (T_{i} - T_{\mathrm{liquid}})
+$$
+
+- $U_{\text{sea}} = 0.08\ \text{W/(m}^2\cdot\text{K)}$
+- $U_{\text{air}} = 0.10\ \text{W/(m}^2\cdot\text{K)}$
+- $U_{\text{coff}} = 0.12\ \text{W/(m}^2\cdot\text{K)}$
 - $\text{SSF}$: Sloshing Scaling Factor
 
 > [!NOTE]
@@ -96,7 +100,7 @@ The resulting Boil-Off Gas mass flow rate $\dot{m}_{\text{BOG}}$ [kg/s] is:
 
 $$\dot{m}_{\text{BOG}} = \frac{\dot{Q}_{\text{total}}}{L_{\text{LNG}}}$$
 
-*(Latent heat of vaporization $L_{\text{LNG}} = 510{,}000\ \text{J/kg}$)*.
+(Latent heat of vaporization $L_{\text{LNG}} = 510{,}000\ \text{J/kg}$ ).
 
 ### 2. Hydrodynamics & Tank Geometry
 In actual LNG carriers, membrane containment systems (such as GTT Mark III or NO96) feature intricate corrugated membranes, secondary barriers, and complex insulation arrangements. For the purposes of this simulator, **the geometry of the cargo tanks has been simplified into an idealized polygonal prismatic model**:
@@ -339,7 +343,7 @@ This project currently operates as an initial **Minimum Viable Product (MVP)**. 
 - **Gaztransport & Technigaz (GTT) (2020)**: [*Membrane Containment Systems*](https://www.gtt.fr/activities/gtt-energy/technologies-expertise/membranes/markiii).
 
 ### Marine Machinery & Propulsion Specifications
-- Various Technical manuals - Project Specific
+- Various Product Guides
 
 ### Technical Documentation (Project Repository)
 Found inside the local [`docs/`](docs/) directory:
