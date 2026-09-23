@@ -15,7 +15,7 @@ Avg_Vapor_Temperature = -104.6 #deg C
 Tank_Capacity = 24_670.0 # m^3
 Liquid_Volume = 24_202.629 # m^3
 Tank_Pressure = 128 #mbar
-Geometry = {breadth = 41.86, height = 27.7, length = 33.6, h1 = 16.0, h2 = 13.0} # in m. See README.md for h11,h12,...
+Geometry = {breadth = 41.86, height = 27.7, length = 33.6, h1 = 16.0, h2 = 13.0} # in m. See README.md for h1,h2,...
 
 #No.2 tank params
 [[tanks]]
