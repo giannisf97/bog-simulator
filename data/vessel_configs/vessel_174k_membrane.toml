@@ -50,12 +50,12 @@ Geometry = {breadth = 41.86, height = 27.7, length = 48.68, h1 = 10.14, h2 = 8.0
 #=========CONSUMERS===========
 [[Main_Engines]]
 type = "5G70ME-C-GI Tier III"
-rpm = 65
+rpm = 67
 is_operational = 1
 
 [[Main_Engines]]
 type = "5G70ME-C-GI Tier III"
-rpm = 65
+rpm = 67
 is_operational = 1
 
 [[Diesel_Generators]]
@@ -80,4 +80,4 @@ output = 2400
 
 [Gcu]
 rate = 2000
-is_operational = 1
+is_operational = 0

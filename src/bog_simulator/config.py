@@ -17,7 +17,7 @@ DENSITY_LNG: float = 434.8 # kg/m^3
 # an overall daily Boil-Off Rate (BOR) of ~0.10% - 0.15% per day in accordance with
 # international maritime standards for GTT Mark III / NO96 membrane containment systems.
 THERMAL_CONDUCTIVITY: dict[str, float] = {
-    "sea": 0.1,
-    "air": 0.12,
-    "coff": 0.14,
+    "sea": 0.08,
+    "air": 0.10,
+    "coff": 0.12,
 } # W/m^2*K

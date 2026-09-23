@@ -13,4 +13,6 @@ __pycache__/
 *.py[cod]
 
 #docs excluded due to GDPR
-docs/
+docs/manuals/Cargo_Tanks.pdf
+docs/snapshots
+docs/various
